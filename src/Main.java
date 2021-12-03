@@ -4,8 +4,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-//need to finish setting up book register , then do book check, and like make it a file and stuff lol 
-
 public class Main {
     private static File bookshelf = new File("bookshelf.txt");
 
@@ -28,7 +26,6 @@ public class Main {
         Scanner input = new Scanner(System.in);
         return input.nextLine();
     }
-
 
     public static void bookRegister() {
 

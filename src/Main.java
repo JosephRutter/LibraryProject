@@ -1,5 +1,5 @@
-
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -7,9 +7,40 @@ import java.util.Scanner;
 public class Main {
     private static File bookshelf = new File("bookshelf.txt");
 
-    public static void register(){}
+    public static String getPassword(){
+        Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
 
-    public static void guestSignIn(){}
+        while(true){
+            String passwordInput = getInput("please enter a secure password, it must have 1 uppercase letter, 1 special character, and be at least 8 letters long");
+            Matcher matcher = pattern.matcher(passwordInput);
+            if(passwordInput.contains(".*\\d*.") && passwordInput.equals(passwordInput.toUpperCase()) && passwordInput.length() >= 8 && matcher.find())
+            {return passwordInput;
+            }else{
+                System.out.println("that is not a secure enough password, please try again");
+            }
+        }
+    }
+
+    public static String getEmail(){
+        while (true) {
+            String emailInput = getInput("please enter a valid email");
+            if (emailInput.contains("@") && emailInput.contains(".com")) {
+                return emailInput;
+            } else {
+                System.out.println("that is not a valid email, please try again");
+            }
+        }
+    }
+
+    public static void createAccount() {
+       String email = getEmail();
+       String Password = getPassword();
+
+
+    }
+
+    public static void guestSignIn() {
+    }
 
     public static void adminLogin() {
         final String adminPassword = "harold trotter";
@@ -25,25 +56,26 @@ public class Main {
     public static void guestLogin() {
         String userChoice;
         boolean loggedIn = false;
-        while (!loggedIn){
+        while (!loggedIn) {
             userChoice = getInput("would you like to sign in or register an account?");
 
-        switch (userChoice) {
+            switch (userChoice) {
 
-            case("sign in"):
-                guestSignIn();
-                loggedIn = true;
-                break;
+                case ("sign in"):
+                    guestSignIn();
+                    loggedIn = true;
+                    break;
 
-            case("register"):
-                register();
-                break;
+                case ("register"):
+                    createAccount();
+                    break;
 
-            default:
-                System.out.println("that was not a valid choice");
-                break;
+                default:
+                    System.out.println("that was not a valid choice");
+                    break;
+            }
         }
-    }}
+    }
 
     public static boolean guestCheck() {
         System.out.println("welcome to the library");

@@ -5,23 +5,21 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+    private static File userAccounts = new File("accounts.txt");
     private static File bookshelf = new File("bookshelf.txt");
 
-    public static String getPassword(){
-        Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
-
-        while(true){
-            String passwordInput = getInput("please enter a secure password, it must have 1 uppercase letter, 1 special character, and be at least 8 letters long");
-            Matcher matcher = pattern.matcher(passwordInput);
-            if(passwordInput.contains(".*\\d*.") && passwordInput.equals(passwordInput.toUpperCase()) && passwordInput.length() >= 8 && matcher.find())
-            {return passwordInput;
-            }else{
+    public static String getPassword() {
+        while (true) {
+          String   passwordInput = getInput("please enter a secure password, it must have 1 uppercase letter, 1 special character, and be at least 8 letters long");
+            if (passwordInput.matches(".*\\d*.") && passwordInput.equals(passwordInput.toUpperCase()) && passwordInput.length() >= 8 && passwordInput.matches("^(?=.*[!@#£$%^&*])")) {
+               return passwordInput;  //if statement dont work lol
+            } else {
                 System.out.println("that is not a secure enough password, please try again");
             }
         }
     }
 
-    public static String getEmail(){
+    public static String getEmail() {
         while (true) {
             String emailInput = getInput("please enter a valid email");
             if (emailInput.contains("@") && emailInput.contains(".com")) {
@@ -33,13 +31,58 @@ public class Main {
     }
 
     public static void createAccount() {
-       String email = getEmail();
-       String Password = getPassword();
+
+        try {
+            FileWriter accountChecker = new FileWriter(userAccounts);
+            accountChecker.write(getEmail() + "~" + getPassword());
+            System.out.println("account successfully created, you can now login to the library system");
+        } catch (IOException e) {
+            System.out.println("account could not be created");
+            e.printStackTrace();
+        }
 
 
     }
 
     public static void guestSignIn() {
+
+        confirmPassword(confirmEmail());
+
+
+    }
+
+    public static void confirmPassword(String currentLine) {
+
+        boolean correctPassword = false;
+        while (!correctPassword) {
+            String passwordInput = getInput("please enter your password");
+            if(currentLine.contains(passwordInput)){
+              break;
+            }else{
+                System.out.println("that was not the correct password");
+            }
+        }
+    }
+
+    public static String confirmEmail() {
+        try {
+            Scanner accountChecker = new Scanner(userAccounts);
+            boolean foundEmail = false;
+            while (!foundEmail) {
+                String emailInput = getInput("please enter your email that you have registered with");
+                while (accountChecker.hasNextLine()) {
+                    String currentLine = accountChecker.nextLine();
+                    if (currentLine.contains(emailInput)) {
+                        return currentLine;
+                    }
+
+                }
+                System.out.println("that email does not exist");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static void adminLogin() {

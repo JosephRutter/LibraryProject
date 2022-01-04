@@ -1,18 +1,22 @@
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
     private static File userAccounts = new File("accounts.txt");
     private static File bookshelf = new File("bookshelf.txt");
 
     public static String getPassword() {
+
+        Pattern validPassword = Pattern.compile("(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}");
+
         while (true) {
-          String   passwordInput = getInput("please enter a secure password, it must have 1 uppercase letter, 1 special character, and be at least 8 letters long");
-            if (passwordInput.matches(".*\\d*.") && passwordInput.equals(passwordInput.toUpperCase()) && passwordInput.length() >= 8 && passwordInput.matches("^(?=.*[!@#£$%^&*])")) {
-               return passwordInput;  //if statement dont work lol
+            String passwordInput = getInput("please enter a secure password, it must have 1 uppercase letter, 1 special character, and be at least 8 letters long");
+            Matcher matcher = validPassword.matcher(passwordInput);
+            if (matcher.matches()) {
+                return passwordInput;
             } else {
                 System.out.println("that is not a secure enough password, please try again");
             }
@@ -45,20 +49,16 @@ public class Main {
     }
 
     public static void guestSignIn() {
-
-        confirmPassword(confirmEmail());
-
-
-    }
+        confirmPassword(confirmEmail());}
 
     public static void confirmPassword(String currentLine) {
 
         boolean correctPassword = false;
         while (!correctPassword) {
             String passwordInput = getInput("please enter your password");
-            if(currentLine.contains(passwordInput)){
-              break;
-            }else{
+            if (currentLine.contains(passwordInput)) {
+                break;
+            } else {
                 System.out.println("that was not the correct password");
             }
         }

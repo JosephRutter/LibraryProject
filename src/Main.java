@@ -37,8 +37,9 @@ public class Main {
     public static void createAccount() {
 
         try {
-            FileWriter accountChecker = new FileWriter(userAccounts);
+            FileWriter accountChecker = new FileWriter(userAccounts , true);
             accountChecker.write(getEmail() + "~" + getPassword());
+            accountChecker.close();
             System.out.println("account successfully created, you can now login to the library system");
         } catch (IOException e) {
             System.out.println("account could not be created");
@@ -140,7 +141,7 @@ public class Main {
             switch (getInput("would you like to browse available books , search for a specific book or leave?")) {
 
                 case ("browse"):
-                    bookRegister();
+                    bookCheck();
                     break;
 
                 case ("search"):
@@ -275,6 +276,9 @@ public class Main {
                     break;
                 case ("remove"):
                     bookRemove();
+                    break;
+                case ("search"):
+                    search();
                     break;
 
                 default:

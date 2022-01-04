@@ -5,8 +5,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Main {
-    private static File userAccounts = new File("accounts.txt");
-    private static File bookshelf = new File("bookshelf.txt");
+    public static File userAccounts = new File("accounts.txt");
+    public static File bookshelf = new File("bookshelf.txt");
 
     public static String getPassword() {
 
@@ -89,7 +89,7 @@ public class Main {
     public static void adminLogin() {
         final String adminPassword = "harold trotter";
         while (true) {
-            String passwordInput = getInput("please enter the admin password");
+            String passwordInput = guest.getInput("please enter the admin password");
             if (passwordInput.equals(adminPassword)) {
                 break;
             }
@@ -97,83 +97,7 @@ public class Main {
         }
     }
 
-    public static void guestLogin() {
-        String userChoice;
-        boolean loggedIn = false;
-        while (!loggedIn) {
-            userChoice = getInput("would you like to sign in or register an account?");
 
-            switch (userChoice) {
-
-                case ("sign in"):
-                    guestSignIn();
-                    loggedIn = true;
-                    break;
-
-                case ("register"):
-                    createAccount();
-                    break;
-
-                default:
-                    System.out.println("that was not a valid choice");
-                    break;
-            }
-        }
-    }
-
-    public static boolean guestCheck() {
-        System.out.println("welcome to the library");
-        while (true) {
-            String userRole = getInput("are you a guest or admin?");
-            if (userRole.equals("guest")) {
-                return true;
-            } else if (userRole.equals("admin")) {
-                return false;
-            } else {
-                System.out.println("that is not a valid entry , please try again");
-            }
-        }
-    }
-
-    public static void guestMenu() {
-        boolean leave = false;
-        while (!leave) {
-            switch (getInput("would you like to browse available books , search for a specific book or leave?")) {
-
-                case ("browse"):
-                    bookCheck();
-                    break;
-
-                case ("search"):
-                    search();
-                    break;
-
-                case ("leave"):
-                    leave = true;
-                    break;
-
-                default:
-                    System.out.println("that is not a valid choice");
-                    break;
-            }
-        }
-
-    }
-
-    public static void search() {
-        try {
-            Scanner fileReader = new Scanner(bookshelf);
-            String userSearch = getInput("please enter the title, the author , or the ISBN of the book you wish to find");
-            while (fileReader.hasNextLine()) {
-                String currentBook = fileReader.nextLine();
-                if (currentBook.contains(userSearch)) {
-                    System.out.println(currentBook);
-                }
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("error ,library database not found" + e);
-        }
-    }
 
     public static void createShelf() {
 
@@ -190,20 +114,15 @@ public class Main {
         }
     }
 
-    public static String getInput(String prompt) {
-        System.out.println(prompt);
-        Scanner input = new Scanner(System.in);
-        return input.nextLine();
-    }
 
     public static void bookRegister() {
         String delimiter = "~";
         Scanner input = new Scanner(System.in);
-        String title = getInput("please enter the title of the book");
+        String title = guest.getInput("please enter the title of the book");
         System.out.println("please enter the book ISBN");
         String ISBN = input.next();
-        String author = getInput("please enter the author of the book");
-        String genre = getInput("please enter the genre of the book");
+        String author = guest.getInput("please enter the author of the book");
+        String genre = guest.getInput("please enter the genre of the book");
         System.out.println("adding book to database");
         try {
 
@@ -241,7 +160,7 @@ public class Main {
         ArrayList<String> temp = new ArrayList<>();
         try {
             bookCheck();
-            String removeChoice = getInput("which book would you like to remove?");
+            String removeChoice = guest.getInput("which book would you like to remove?");
             Scanner librarian = new Scanner(bookshelf);
             while (librarian.hasNextLine()) {
                 String line = librarian.nextLine();
@@ -263,7 +182,7 @@ public class Main {
     public static void adminMenu() {
         boolean leave = false;
         while (!leave) {
-            switch (getInput(" would you like to register a book,remove a book, check what books are available, search for a specific book or leave?")) {
+            switch (guest.getInput(" would you like to register a book,remove a book, check what books are available, search for a specific book or leave?")) {
                 case ("register"):
                     bookRegister();
                     break;
@@ -278,7 +197,7 @@ public class Main {
                     bookRemove();
                     break;
                 case ("search"):
-                    search();
+                    guest.search();
                     break;
 
                 default:
@@ -290,9 +209,9 @@ public class Main {
 
     public static void main(String[] args) {
         createShelf();
-        if (guestCheck()) {
-            guestLogin();
-            guestMenu();
+        if (guest.guestCheck()) {
+            guest.guestLogin();
+            guest.guestMenu();
         } else {
             adminLogin();
             adminMenu();

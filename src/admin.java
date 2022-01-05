@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -52,7 +53,7 @@ public class admin {
     public static void adminMenu() {
         boolean leave = false;
         while (!leave) {
-            switch (guest.getInput(" would you like to register a book,remove a book, check what books are available, search for a specific book or leave?")) {
+            switch (guest.getInput(" would you like to register a book,remove a book, check what books are available, search for a specific book,remove a user or leave?")) {
                 case ("register"):
                     bookRegister();
                     break;
@@ -63,11 +64,14 @@ public class admin {
                     System.out.println("goodbye, come again soon");
                     leave = true;
                     break;
-                case ("remove"):
+                case ("remove book"):
                     bookRemove();
                     break;
                 case ("search"):
                     guest.search();
+                    break;
+                case ("remove user"):
+                    removeGuest();
                     break;
 
                 default:
@@ -77,7 +81,33 @@ public class admin {
         }
     }
 
+    public static void removeGuest(){
+        ArrayList<String> temp = new ArrayList<>();
+        try {
+            Scanner input = new Scanner(System.in);
+            Scanner librarian = new Scanner(Main.userAccounts);
+            FileWriter banHammer = new FileWriter(Main.userAccounts, false);
+            System.out.println("which user would you like to remove?");
+            while (librarian.hasNextLine()){
+                System.out.println(librarian.nextLine());
+            }
+            String bannedUser = input.next();
 
+            while (librarian.hasNextLine()){
+              String tempLine = librarian.nextLine();
+                if(!(tempLine.contains(bannedUser))){
+                    temp.add(tempLine);
+                }
+            }
+            for (int i = 0; i < temp.size(); i++){
+                banHammer.write(temp.get(i) + "\n");
+                banHammer.close();
+            }
+            System.out.println("removed!");
+        } catch (IOException e) {
+            System.out.println("an error occurred"+e);
+        }
+    }
 
     public static void adminLogin() {
         final String adminPassword = "harold trotter";

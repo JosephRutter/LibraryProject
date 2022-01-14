@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,7 +13,7 @@ public class admin {
             Scanner fileReader = new Scanner(Main.bookshelf);
 
             if (Main.bookshelf.getName().length() == 0) {
-                System.out.println("there are no books currently registered");
+                System.out.println("there are no databases.books currently registered");
             } else {
                 while (fileReader.hasNextLine()) {
                     String bookInfo = fileReader.nextLine() + "\n";
@@ -53,7 +52,7 @@ public class admin {
     public static void adminMenu() {
         boolean leave = false;
         while (!leave) {
-            switch (guest.getInput(" would you like to register a book,remove a book, check what books are available, search for a specific book,remove a user or leave?")) {
+            switch (guest.getInput(" would you like to register a book,remove a book, check what databases.books are available, search for a specific book,remove a user or leave?")) {
                 case ("register"):
                     bookRegister();
                     break;

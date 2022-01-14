@@ -1,4 +1,8 @@
+import databases.borrowers;
+
 import java.io.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -17,6 +21,8 @@ public class Main {
             e.printStackTrace();
         }
     }
+    public static  ArrayList<borrowers> currentUsers = new ArrayList <borrowers>();
+
     public static void txtToBooks(){
         try {
             Scanner librarian = new Scanner(bookshelf);
@@ -27,11 +33,14 @@ public class Main {
             e.printStackTrace();
         }
     }
+
     public static void txtToBorrowers() {
         try {
             Scanner librarian = new Scanner(userAccounts);
+            librarian.useDelimiter("~");
             while (librarian.hasNextLine()) {
-                borrowers
+
+                currentUsers.add((new borrowers(librarian.next(), librarian.next(), librarian.next(), librarian.next(), librarian.next())));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -39,6 +48,7 @@ public class Main {
     }
     public static void main(String[] args) {
         createShelf();
+        txtToBorrowers();
         if (guest.guestCheck()) {
             guest.guestLogin();
             guest.guestMenu();

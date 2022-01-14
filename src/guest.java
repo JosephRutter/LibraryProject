@@ -81,7 +81,7 @@ public class guest {
     public static void guestMenu() {
         boolean leave = false;
         while (!leave) {
-            switch (getInput("would you like to browse available books , search for a specific book or leave?")) {
+            switch (getInput("would you like to browse available databases.books , search for a specific book or leave?")) {
 
                 case ("browse"):
                     bookCheck();
@@ -110,7 +110,7 @@ public class guest {
             Scanner fileReader = new Scanner(Main.bookshelf);
 
             if (Main.bookshelf.getName().length() == 0) {
-                System.out.println("there are no books currently registered");
+                System.out.println("there are no databases.books currently registered");
             } else {
                 while (fileReader.hasNextLine()) {
                     String bookInfo = fileReader.nextLine() + "\n";

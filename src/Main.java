@@ -40,7 +40,7 @@ public class Main {
             librarian.useDelimiter("~");
             while (librarian.hasNextLine()) {
 
-                currentUsers.add((new borrowers(librarian.next(), librarian.next(), librarian.next(), librarian.next(), librarian.next())));
+                currentUsers.add((new borrowers
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

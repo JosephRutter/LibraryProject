@@ -3,18 +3,14 @@ package databases;
 import java.util.ArrayList;
 
 public class borrowers {
-    private String firstBook;
-    private String secondBook;
-    private String thirdBook;
+    private ArrayList books = new ArrayList();
     private String username;
     private String password;
 
-    public borrowers(String username, String password, String firstBook , String secondBook, String thirdBook) {
+    public borrowers(String username, String password) {
         this.username = username;
         this.password = password;
-        this.firstBook = firstBook;
-        this.secondBook = secondBook;
-        this.thirdBook = thirdBook;
+
     }
 
 
@@ -36,27 +32,8 @@ public class borrowers {
     }
 
 
-    public String getFirstBook() {
-        return firstBook;
-    }
-
-    public void setFirstBook(String firstBook) {
-        this.firstBook = firstBook;
-    }
-
-    public String getSecondBook() {
-        return secondBook;
-    }
-
-    public void setSecondBook(String secondBook) {
-        this.secondBook = secondBook;
-    }
-
-    public String getThirdBook() {
-        return thirdBook;
-    }
-
-    public void setThirdBook(String thirdBook) {
-        this.thirdBook = thirdBook;
+    @Override
+    public String   toString() {
+        return books.toString() + '$' + username + '~' + password ;
     }
 }

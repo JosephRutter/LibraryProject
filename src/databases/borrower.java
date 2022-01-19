@@ -1,21 +1,17 @@
 package databases;
 
-import java.util.ArrayList;
-
-public class borrowers {
-    private ArrayList books = new ArrayList();
+public class borrower {
     private String username;
     private String password;
 
-    public borrowers(String username, String password) {
+    public borrower(String username, String password) {
         this.username = username;
         this.password = password;
 
     }
 
 
-
-    public  String getUsername() {
+    public String getUsername() {
         return username;
     }
 
@@ -33,7 +29,7 @@ public class borrowers {
 
 
     @Override
-    public String   toString() {
-        return books.toString() + '$' + username + '~' + password ;
+    public String toString() {
+        return username + '~' + password;
     }
 }

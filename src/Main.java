@@ -1,13 +1,14 @@
-import databases.borrowers;
+import databases.book;
+import databases.borrower;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static File userAccounts = new File("accounts.txt");
     public static File bookshelf = new File("bookshelf.txt");
+
     public static void createShelf() {
 
         try {
@@ -21,34 +22,30 @@ public class Main {
             e.printStackTrace();
         }
     }
-    public static  ArrayList<borrowers> currentUsers = new ArrayList <borrowers>();
 
-    public static void txtToBooks(){
-        try {
-            Scanner librarian = new Scanner(bookshelf);
-            while(librarian.hasNextLine()){
+    public static ArrayList<Object> currentUsers = new ArrayList<>();
 
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public static void txtToBorrowers() {
+    public static void borrowersToTemp() {
         try {
             Scanner librarian = new Scanner(userAccounts);
             librarian.useDelimiter("~");
             while (librarian.hasNextLine()) {
 
-                currentUsers.add((new borrowers
+                currentUsers.add((new borrower(librarian.next(), librarian.next())));
+                while (librarian.hasNext()) {
+                    currentUsers.add(new book(librarian.next(), librarian.next(), librarian.next(), librarian.next()));
+                }
             }
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
+
     public static void main(String[] args) {
         createShelf();
-        txtToBorrowers();
+        borrowersToTemp();
         if (guest.guestCheck()) {
             guest.guestLogin();
             guest.guestMenu();

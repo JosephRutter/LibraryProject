@@ -1,6 +1,6 @@
 package databases;
 
-public class books {
+public class book {
 
 
     private String title;
@@ -8,7 +8,7 @@ public class books {
     private String author;
     private String genre;
 
-    public books(String title, String ISBN, String author, String genre) {
+    public book(String title, String ISBN, String author, String genre) {
         this.title = title;
         this.ISBN = ISBN;
         this.author = author;
@@ -49,6 +49,6 @@ public class books {
 
     @Override
     public String toString() {
-        return title + ISBN + author+ genre;
+        return '~' + title + '~' + ISBN + '~' + author + '~' + genre;
     }
 }

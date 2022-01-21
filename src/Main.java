@@ -2,6 +2,7 @@ import databases.book;
 import databases.borrower;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -24,6 +25,7 @@ public class Main {
     }
 
     public static ArrayList<Object> currentUsers = new ArrayList<>();
+    public static ArrayList<Object> currentBooks = new ArrayList<Object>();
 
 
     public static void borrowersToTemp() {
@@ -37,15 +39,51 @@ public class Main {
                     currentUsers.add(new book(librarian.next(), librarian.next(), librarian.next(), librarian.next()));
                 }
             }
-
+            librarian.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
+    public static void booksToTemp(){
+        try {
+            Scanner librarian = new Scanner(bookshelf);
+            librarian.useDelimiter("~");
+            while(librarian.hasNextLine()){
+                currentBooks.add(new  book(librarian.next(), librarian.next(),librarian.next(), librarian.next()));
+            }
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void booksToTxt() {
+        try {
+           FileWriter librarian = new FileWriter(bookshelf);
+           for (int i = 0; i < currentBooks.size();i++){
+            librarian.write(currentBooks.get(i).toString());
+           }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void borrowersToTxt{
+        try {
+
+            FileWriter librarian = new FileWriter(bookshelf);
+            for (int i = 0; i < currentUsers.size();i++){
+                librarian.write(currentUsers.get(i).toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    }
+
 
     public static void main(String[] args) {
         createShelf();
         borrowersToTemp();
+        booksToTemp();
         if (guest.guestCheck()) {
             guest.guestLogin();
             guest.guestMenu();
@@ -53,5 +91,8 @@ public class Main {
             admin.adminLogin();
             admin.adminMenu();
         }
+        booksToTxt();
+        borrowersToTxt();
+
     }
 }

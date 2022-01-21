@@ -1,3 +1,5 @@
+import databases.book;
+
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -121,27 +123,13 @@ public class admin {
 
 
     public static void bookRegister() {
-        String delimiter = "~";
         Scanner input = new Scanner(System.in);
-        String title = guest.getInput("please enter the title of the book");
-        System.out.println("please enter the book ISBN");
-        String ISBN = input.next();
-        String author = guest.getInput("please enter the author of the book");
-        String genre = guest.getInput("please enter the genre of the book");
-        System.out.println("adding book to database");
-        try {
-
-            FileWriter librarian = new FileWriter(Main.bookshelf, true);
-            librarian.write(title + delimiter + ISBN + delimiter + author + delimiter + genre + "\n");
-            librarian.close();
-
-            System.out.println("book successfully added");
-        } catch (IOException e) {
-            System.out.println("error, unable to add book");
-            e.printStackTrace();
+        System.out.println("please enter the book title, ISBN,author and genre in that order ");
+        Main.currentBooks.add(new book(input.next(), input.next(), input.next(), input.next()));
+        System.out.println("book added");
         }
     }
 
 
 
-}
+

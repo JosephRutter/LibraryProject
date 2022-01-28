@@ -1,19 +1,15 @@
+
+import databases.book;
+import databases.borrower;
+
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class guest {
-
-
-
-
-
-
-
-
 
 
     public static String getInput(String prompt) {
@@ -32,7 +28,7 @@ public class guest {
             switch (userChoice) {
 
                 case ("sign in"):
-                    guestSignIn();
+                    confirmUser();
                     loggedIn = true;
                     break;
 
@@ -76,7 +72,9 @@ public class guest {
         }
     }
 
+    public static ArrayList<Object> currentUsers = new ArrayList<>();
 
+    public static String loggedOnUser;
 
     public static void guestMenu() {
         boolean leave = false;
@@ -95,6 +93,9 @@ public class guest {
                     leave = true;
                     break;
 
+                case ("borrow"):
+                    borrow();
+                    break;
                 default:
                     System.out.println("that is not a valid choice");
                     break;
@@ -103,25 +104,20 @@ public class guest {
 
     }
 
+    public static void borrow() {
+        bookCheck();
+        System.out.println("which book would you like to borrow");
+
+    }
+
 
     public static void bookCheck() {
-
-        try {
-            Scanner fileReader = new Scanner(Main.bookshelf);
-
-            if (Main.bookshelf.getName().length() == 0) {
-                System.out.println("there are no databases.books currently registered");
-            } else {
-                while (fileReader.hasNextLine()) {
-                    String bookInfo = fileReader.nextLine() + "\n";
-                    System.out.println(bookInfo);
-                }
-            }
-            fileReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("an error occurred");
+        for (int i = 0; i < Main.currentBooks.size(); i++) {
+            (Main.currentBooks.get(i)).toString();
         }
+
     }
+
 
     public static String getPassword() {
 
@@ -151,54 +147,32 @@ public class guest {
 
     public static void createAccount() {
 
-        try {
-            FileWriter accountChecker = new FileWriter(Main.userAccounts, true);
-            accountChecker.write(getEmail() + "~" + getPassword());
-            accountChecker.close();
-            System.out.println("account successfully created, you can now login to the library system");
-        } catch (IOException e) {
-            System.out.println("account could not be created");
-            e.printStackTrace();
-        }
+
+        currentUsers.add(new borrower(getEmail(), getPassword()));
+        System.out.println("account successfully created, you can now login to the library system");
 
 
     }
 
-    public static void guestSignIn() {
-        confirmPassword(confirmEmail());}
 
-    public static void confirmPassword(String currentLine) {
-
-        boolean correctPassword = false;
-        while (!correctPassword) {
-            String passwordInput = getInput("please enter your password");
-            if (currentLine.contains(passwordInput)) {
-                break;
-            } else {
-                System.out.println("that was not the correct password");
-            }
-        }
-    }
-
-    public static String confirmEmail() {
-        try {
-            Scanner accountChecker = new Scanner(Main.userAccounts);
-            boolean foundEmail = false;
-            while (!foundEmail) {
-                String emailInput = getInput("please enter your email that you have registered with");
-                while (accountChecker.hasNextLine()) {
-                    String currentLine = accountChecker.nextLine();
-                    if (currentLine.contains(emailInput)) {
-                        return currentLine;
+    public static void confirmUser() {
+        boolean loggedIn = false;
+        while (!loggedIn) {
+            String emailInput = getInput("please enter a valid email");
+            String passwordInput = getInput("please enter the password for this account");
+            for (Object obj : currentUsers) {
+                if (obj.getClass() == borrower.class) {
+                    if (obj.toString().contains(emailInput) && obj.toString().contains(passwordInput)) {
+                        loggedIn = true;
                     }
-
                 }
-                System.out.println("that email does not exist");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+                if (loggedIn) {
+                    break;
+                } else {
+                    System.out.println("your input does not match our database, please try again");
+                }
 
+            }
+        }
+    }
 }

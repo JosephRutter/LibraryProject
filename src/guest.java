@@ -4,7 +4,6 @@ import databases.borrower;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -79,10 +78,10 @@ public class guest {
     public static void guestMenu() {
         boolean leave = false;
         while (!leave) {
-            switch (getInput("would you like to browse available databases.books , search for a specific book or leave?")) {
+            switch (getInput("would you like to browse available books , search for a specific book, borrow a book or leave?")) {
 
                 case ("browse"):
-                    bookCheck();
+                    admin.bookCheck();
                     break;
 
                 case ("search"):
@@ -103,22 +102,38 @@ public class guest {
         }
 
     }
+    public static int getUserPosition(String loggedOnUser){
+        for (Object obj: currentUsers
+             ) {
+            if(obj.getClass().equals(borrower.class)){
+                if(((borrower) obj).getUsername().contains(loggedOnUser)){
+                    return currentUsers.indexOf(obj) +1;
 
-    public static void borrow() {
-        bookCheck();
-        System.out.println("which book would you like to borrow");
 
+                }
+            }
+
+        } return -1;
     }
 
 
-    public static void bookCheck() {
-        for (int i = 0; i < Main.currentBooks.size(); i++) {
-            (Main.currentBooks.get(i)).toString();
+    public static void borrow() {
+        admin.bookCheck();
+        String bookToBorrow = getInput("which book would you like to borrow?");
+        for (Object obj : Main.currentBooks) {
+            if(obj.getClass() == book.class){
+                if(((book) obj).getTitle().equals(bookToBorrow)) {
+                    currentUsers.add(getUserPosition(loggedOnUser),obj);
+                    Main.currentBooks.remove(obj);
+                    break;
+                }
+            }
         }
 
     }
 
 
+    //OK
     public static String getPassword() {
 
         Pattern validPassword = Pattern.compile("(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}");
@@ -134,6 +149,7 @@ public class guest {
         }
     }
 
+    //OK
     public static String getEmail() {
         while (true) {
             String emailInput = getInput("please enter a valid email");
@@ -145,6 +161,7 @@ public class guest {
         }
     }
 
+    //OK
     public static void createAccount() {
 
 
@@ -154,7 +171,7 @@ public class guest {
 
     }
 
-
+    //OK
     public static void confirmUser() {
         boolean loggedIn = false;
         while (!loggedIn) {
@@ -163,6 +180,7 @@ public class guest {
             for (Object obj : currentUsers) {
                 if (obj.getClass() == borrower.class) {
                     if (obj.toString().contains(emailInput) && obj.toString().contains(passwordInput)) {
+                        loggedOnUser = emailInput;
                         loggedIn = true;
                     }
                 }

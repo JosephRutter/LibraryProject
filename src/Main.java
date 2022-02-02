@@ -1,5 +1,7 @@
 import databases.book;
 import databases.borrower;
+
+import javax.annotation.processing.Filer;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -7,7 +9,9 @@ import java.util.Scanner;
 public class Main {
     public static File userAccounts = new File("accounts.txt");
     public static File bookshelf = new File("bookshelf.txt");
+    public static ArrayList<Object> currentBooks = new ArrayList<>();
 
+    //OK
     public static void createShelf() {
 
         try {
@@ -22,10 +26,7 @@ public class Main {
         }
     }
 
-
-    public static ArrayList<Object> currentBooks = new ArrayList<>();
-
-
+    //OK
     public static void borrowersToTemp() {
         try {
             Scanner librarian = new Scanner(userAccounts);
@@ -36,13 +37,14 @@ public class Main {
                 while (librarian.hasNext()) {
                     guest.currentUsers.add(new book(librarian.next(), librarian.next(), librarian.next(), librarian.next()));
                 }
-                librarian.nextLine();
             }
             librarian.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
+
+    //OK
     public static void booksToTemp() {
         try {
             Scanner librarian = new Scanner(bookshelf);
@@ -50,26 +52,56 @@ public class Main {
             if (bookshelf.length() != 0) {
                 while (librarian.hasNextLine()) {
                     currentBooks.add(new book(librarian.next(), librarian.next(), librarian.next(), librarian.next()));
-                }
-            }}
-        catch(FileNotFoundException e){
-                e.printStackTrace();
-            }
-        }
 
-    public static void booksToTxt() {
-        try {
-           FileWriter librarian = new FileWriter(bookshelf);
-           for (int i = 0; i < currentBooks.size();i++){
-            librarian.write(currentBooks.get(i).toString());
-           }
-        } catch (IOException e) {
+                }
+            }
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
+    //OK
+    public static void booksToTxt() {
+        try {
+            FileWriter cleaner = new FileWriter(bookshelf,false);
+            FileWriter librarian = new FileWriter(bookshelf,true);
+            cleaner.write("");
+            cleaner.close();
+            for (Object obj : currentBooks) {
+                librarian.write((obj.toString())+"\n");
+            }
+            librarian.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
+    public static void borrowersToTxt() {
+        try {
+            FileWriter cleaner = new FileWriter(userAccounts,false);
+            FileWriter librarian = new FileWriter(userAccounts,true);
+            cleaner.write("");
+            cleaner.close();
+            for (Object obj : guest.currentUsers
+            ) {
+                if (obj.getClass() == borrower.class) {
+                    librarian.write("\n");
+                }
+                librarian.write(obj.toString());
+
+            }
+            librarian.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        {
+
+        }
+    }
+
+    //OK
     public static void main(String[] args) {
         createShelf();
         borrowersToTemp();
@@ -82,6 +114,6 @@ public class Main {
             admin.adminMenu();
         }
         booksToTxt();
-
+        borrowersToTxt();
     }
 }

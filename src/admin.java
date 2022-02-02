@@ -1,4 +1,5 @@
 import databases.book;
+import databases.borrower;
 
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -8,49 +9,29 @@ import java.util.Scanner;
 
 public class admin {
 
-
+    //OK
     public static void bookCheck() {
+        for (Object obj : Main.currentBooks
+        ) {
+            System.out.println(obj.toString());
 
-        try {
-            Scanner fileReader = new Scanner(Main.bookshelf);
-
-            if (Main.bookshelf.getName().length() == 0) {
-                System.out.println("there are no databases.books currently registered");
-            } else {
-                while (fileReader.hasNextLine()) {
-                    String bookInfo = fileReader.nextLine() + "\n";
-                    System.out.println(bookInfo);
-                }
-            }
-            fileReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("an error occurred");
         }
     }
 
+    //OK
     public static void bookRemove() {
-        ArrayList<String> temp = new ArrayList<>();
-        try {
-            bookCheck();
-            String removeChoice = guest.getInput("which book would you like to remove?");
-            Scanner librarian = new Scanner(Main.bookshelf);
-            while (librarian.hasNextLine()) {
-                String line = librarian.nextLine();
-                if (!line.contains(removeChoice)) {
-                    temp.add(line);
+        bookCheck();
+        String bookToRemove = guest.getInput("please enter the book you wish to remove");
+        for (Object obj : Main.currentBooks) {
+            if (obj.getClass() == book.class) {
+                if (((book) obj).getTitle().equals(bookToRemove)) {
+                    Main.currentBooks.remove(obj);
                 }
             }
-            FileWriter remover = new FileWriter(Main.bookshelf, false);
-            for (int i = 0; i < temp.size(); i++) {
-                remover.write(temp.get(i) + "\n");
-                remover.close();
-            }
-            remover.close();
-        } catch (IOException e) {
-            System.out.println("error , file could not be found" + e);
         }
     }
 
+    //OK
     public static void adminMenu() {
         boolean leave = false;
         while (!leave) {
@@ -82,31 +63,28 @@ public class admin {
         }
     }
 
-    public static void removeGuest(){
-        ArrayList<String> temp = new ArrayList<>();
-        try {
-            Scanner input = new Scanner(System.in);
-            Scanner librarian = new Scanner(Main.userAccounts);
-            FileWriter banHammer = new FileWriter(Main.userAccounts, false);
-            System.out.println("which user would you like to remove?");
-            while (librarian.hasNextLine()){
-                System.out.println(librarian.nextLine());
-            }
-            String bannedUser = input.next();
+    public static void removeGuest() {
 
-            while (librarian.hasNextLine()){
-              String tempLine = librarian.nextLine();
-                if(!(tempLine.contains(bannedUser))){
-                    temp.add(tempLine);
+        if (guest.currentUsers.size() == 0) {
+            System.out.println("there are no users to remove");
+        } else {
+            boolean userBanned = false;
+            while (userBanned == false) {
+                String bannedUser = guest.getInput("please enter the user you wish to remove");
+                for (Object obj : guest.currentUsers) {
+                    if (obj.getClass() == borrower.class) {
+                        if (obj.toString().equals(bannedUser)) {
+                            guest.currentUsers.remove(obj);
+                            System.out.println("user successfully removed");
+                            userBanned = true;
+                            break;
+                        }
+                    }
+                }
+                if (userBanned == false) {
+                    System.out.println("user does not exist");
                 }
             }
-            for (int i = 0; i < temp.size(); i++){
-                banHammer.write(temp.get(i) + "\n");
-                banHammer.close();
-            }
-            System.out.println("removed!");
-        } catch (IOException e) {
-            System.out.println("an error occurred"+e);
         }
     }
 
@@ -127,8 +105,8 @@ public class admin {
         System.out.println("please enter the book title, ISBN,author and genre in that order ");
         Main.currentBooks.add(new book(input.next(), input.next(), input.next(), input.next()));
         System.out.println("book added");
-        }
     }
+}
 
 
 

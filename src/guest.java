@@ -95,6 +95,11 @@ public class guest {
                 case ("borrow"):
                     borrow();
                     break;
+
+                case ("return"):
+                    returnBook();
+                    break;
+
                 default:
                     System.out.println("that is not a valid choice");
                     break;
@@ -102,18 +107,50 @@ public class guest {
         }
 
     }
-    public static int getUserPosition(String loggedOnUser){
-        for (Object obj: currentUsers
-             ) {
-            if(obj.getClass().equals(borrower.class)){
-                if(((borrower) obj).getUsername().contains(loggedOnUser)){
-                    return currentUsers.indexOf(obj) +1;
+
+    public static void printUserBooks() {
+        for (int i = getUserPosition(loggedOnUser); i < currentUsers.size(); i++) {
+            if (currentUsers.get(i).getClass().equals(book.class)) {
+                System.out.println(currentUsers.get(i).toString());
+            } else {
+                break;
+            }
+        }
+    }
+
+    public static void returnBook() {
+        if (currentUsers.get(getUserPosition(loggedOnUser)).equals(borrower.class)) {
+            System.out.println("you have no books to return");
+        } else {
+            printUserBooks();
+            String bookToReturn = getInput("which book would you like to return?");
+            for (Object obj : currentUsers
+            ) {
+                if (obj.getClass().equals(book.class) && ((book) obj).getTitle().equals(bookToReturn)) {
+                    Main.currentBooks.add(obj);
+                    currentUsers.remove(obj);
+                    System.out.println("book returned");
+                    break;
+                }
+            }
+
+        }
+    }
+
+
+    public static int getUserPosition(String loggedOnUser) {
+        for (Object obj : currentUsers
+        ) {
+            if (obj.getClass().equals(borrower.class)) {
+                if (((borrower) obj).getUsername().contains(loggedOnUser)) {
+                    return currentUsers.indexOf(obj) + 1;
 
 
                 }
             }
 
-        } return -1;
+        }
+        return -1;
     }
 
 
@@ -121,9 +158,9 @@ public class guest {
         admin.bookCheck();
         String bookToBorrow = getInput("which book would you like to borrow?");
         for (Object obj : Main.currentBooks) {
-            if(obj.getClass() == book.class){
-                if(((book) obj).getTitle().equals(bookToBorrow)) {
-                    currentUsers.add(getUserPosition(loggedOnUser),obj);
+            if (obj.getClass() == book.class) {
+                if (((book) obj).getTitle().equals(bookToBorrow)) {
+                    currentUsers.add(getUserPosition(loggedOnUser), obj);
                     Main.currentBooks.remove(obj);
                     break;
                 }

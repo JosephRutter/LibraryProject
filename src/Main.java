@@ -63,12 +63,12 @@ public class Main {
     //OK
     public static void booksToTxt() {
         try {
-            FileWriter cleaner = new FileWriter(bookshelf,false);
-            FileWriter librarian = new FileWriter(bookshelf,true);
+            FileWriter cleaner = new FileWriter(bookshelf, false);
+            FileWriter librarian = new FileWriter(bookshelf, true);
             cleaner.write("");
             cleaner.close();
             for (Object obj : currentBooks) {
-                librarian.write((obj.toString())+"\n");
+                librarian.write((obj.toString()) + "\n");
             }
             librarian.close();
         } catch (IOException e) {
@@ -80,8 +80,8 @@ public class Main {
 
     public static void borrowersToTxt() {
         try {
-            FileWriter cleaner = new FileWriter(userAccounts,false);
-            FileWriter librarian = new FileWriter(userAccounts,true);
+            FileWriter cleaner = new FileWriter(userAccounts, false);
+            FileWriter librarian = new FileWriter(userAccounts, true);
             cleaner.write("");
             cleaner.close();
             for (Object obj : guest.currentUsers
